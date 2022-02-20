@@ -10,9 +10,7 @@ import javax.validation.constraints.Size;
  */
 public class InquiryForm{
 	
-	public InquiryForm() {}
-
-    public InquiryForm(String name, String email, String contents) {
+	public InquiryForm(String name, String email, String contents) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -20,14 +18,14 @@ public class InquiryForm{
 	}
 
 	@Size(min = 1, max = 20, message="Please input 20 characters or less")
-    private String name;
-    
-    @NotNull
-    @Email(message = "Invalid E-mail Format")
-    private String email;
+	private String name;
+	
+	@NotNull
+	@Email(message = "Invalid E-mail Format")
+	private String email;
 
-    @NotNull
-    private String contents;
+	@NotNull
+	private String contents;
 
 	public String getName() {
 		return name;
@@ -52,6 +50,5 @@ public class InquiryForm{
 	public void setContents(String contents) {
 		this.contents = contents;
 	}
-
 
 }
