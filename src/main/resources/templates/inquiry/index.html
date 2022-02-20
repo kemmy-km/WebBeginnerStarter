@@ -9,7 +9,11 @@
 <h1 th:text="${title}">仮のタイトル</h1>
 <table>
 	<tr>
-		<th>id</th><th>name</th><th>email</th><th>contents</th><th>datetime</th>
+		<th>id</th>
+		<th>name</th>
+		<th>email</th>
+		<th>contents</th>
+		<th>datetime</th>
 	</tr>
 	<tr th:each="inquiry : ${inquiryList}">
 		<td th:text="${inquiry.id}">1</td>

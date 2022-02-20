@@ -1,5 +1,12 @@
 package com.example.demo.app.inquiry;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.example.demo.entity.Inquiry;
+import com.example.demo.service.InquiryService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,17 +20,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/inquiry")
 public class InquiryController {
-// 	private final InquiryService inquiryService;
 
-	//Add an annotation here
-// 	public InquiryController(InquiryService inquiryService){
-// 		this.inquiryService = inquiryService;
-// 	}
+	private final InquiryService inquiryService; // interface名の型
+
+	@Autowired
+	public InquiryController(InquiryService inquiryService){
+		this.inquiryService = inquiryService;
+	}
 
 	@GetMapping
 	public String index(Model model) {
-		//hands-on
+		List<Inquiry> list = inquiryService.getAll();
 
+		model.addAttribute("inquiryList", list);
+		model.addAttribute("title", "Inquiry Index");
+		
 		return "inquiry/index";
 	}
 
@@ -55,7 +66,8 @@ public class InquiryController {
 	}
 
 	@PostMapping("/complete")
-	public String complete(@Validated InquiryForm inquiryForm,
+	public String complete(
+			@Validated InquiryForm inquiryForm,
 			BindingResult result,
 			Model model,
 			RedirectAttributes redirectAttributes) {
@@ -63,6 +75,13 @@ public class InquiryController {
 			model.addAttribute("title", "InquiryForm");
 			return "inquiry/form";
 		}
+		Inquiry inquiry = new Inquiry();
+		inquiry.setName(inquiryForm.getName());
+		inquiry.setEmail(inquiryForm.getEmail());
+		inquiry.setContents(inquiryForm.getContents());
+		inquiry.setCreated(LocalDateTime.now());
+		
+		inquiryService.save(inquiry); //DBに登録する処理
 		redirectAttributes.addFlashAttribute("complete", "Registerd!");
 		return "redirect:/inquiry/form";
 	}
